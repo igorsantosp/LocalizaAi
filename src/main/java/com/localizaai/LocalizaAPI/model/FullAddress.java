@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 public class FullAddress extends Address {
-    Integer numero;
-    public FullAddress(Address add, int numero){
+    Integer number;
+    public FullAddress(Address add, int number){
         super.setCep(add.getCep());
         super.setCity(add.getCity());
         super.setNeighborhood(add.getNeighborhood());
         super.setState(add.getState());
         super.setStreet(add.getStreet());
-        this.numero=numero;
+        this.number=number;
     }
 }
