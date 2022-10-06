@@ -2,6 +2,7 @@ package com.localizaai.LocalizaAPI.services.adresscheck;
 
 import com.localizaai.LocalizaAPI.clients.AddressClient;
 import com.localizaai.LocalizaAPI.model.Address;
+import com.localizaai.LocalizaAPI.model.FullAddress;
 import com.localizaai.LocalizaAPI.services.cepidentification.CEPIdentificationService;
 import com.localizaai.LocalizaAPI.services.cloudimersive.CloudImersiveService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,11 @@ public class AddressCheckServiceImpl implements AddressCheckService {
 
     @Override
     public AddressExtractionResult extract(File image) {
-        String imageOCR = cloudImersiveService.imageToText(image);
+        String imageOCR = cloudImersiveService.mocked();
         String cep = cepIdentificationService.findCEP(imageOCR);
+        Integer number = cepIdentificationService.findNumber(imageOCR);
         Address address = addressClient.findByCEP(cep);
-        return new AddressExtractionResult(address, true);
+        return new AddressExtractionResult(new FullAddress(address, number), true);
     }
 
     @Override
