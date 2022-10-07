@@ -1,12 +1,11 @@
-package com.localizaai.LocalizaAPI.clients;
+package com.localizaai.LocalizaAPI.clients.brasilapi;
 
-import com.localizaai.LocalizaAPI.model.Address;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "addressClient", url = "https://brasilapi.com.br/api/cep/v2")
-public interface AddressClient {
+public interface BrasilAPIAddressClient {
     @GetMapping("/{cep}")
-    Address findByCEP(@PathVariable("cep") String cep);
+    BrasilAPIAddress findByCEP(@PathVariable("cep") String cep);
 }

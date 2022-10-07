@@ -1,4 +1,4 @@
-package com.localizaai.LocalizaAPI.services.cepidentification;
+package com.localizaai.LocalizaAPI.core.cepidentification;
 
 import org.springframework.stereotype.Service;
 
