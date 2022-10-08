@@ -1,0 +1,190 @@
+swagger: "2.0"
+info:
+  description: "Essa é a documentação da API LocalizaAi para extração e vaidação de endereços"
+  version: "1.0.0"
+  title: "Swagger API LocalizaAi"
+  contact:
+    email: "engenharia@localizaai.com.br"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api/v1"
+tags:
+  - name: "Imagem"
+    description: "CRUD para upload de imagens de comprovantes de endereço"
+  - name: "Extração"
+    description: "Extraia endereços a partir de um comprovante de endereço por imagem"
+  - name: "Validação"
+    description: "Valide se dados de texto coferem com um comprovante de endereço por imagem"
+security:
+  - client_id: []
+  - access_token: []
+securityDefinitions:
+  client_id:
+    type: "apiKey"
+    in: "header"
+    name: "client_id"
+  access_token:
+    type: "apiKey"
+    in: "header"
+    name: "access_token"
+schemes:
+  - "http"
+paths:
+  /address-image:
+    post:
+      tags:
+        - "Imagem"
+      summary: "Crie um recurso de imagem de comprovante de endereço"
+      operationId: "extrairEndereco"
+      parameters:
+        - name: "file"
+          in: "formData"
+          type: "file"
+      responses:
+        "201":
+          description: "Sucesso."
+          schema:
+            $ref: "#/definitions/imageId"
+        "422":
+          description: "Tipo de arquivo não suportado."
+        "500":
+          description: "Erro Interno."
+  /address-extraction:
+    post:
+      tags:
+        - "Extração"
+      summary: "Extraia um endereço estruturado a partir de uma imagem de comprovante de endereço"
+      operationId: "extrairEndereco"
+      parameters:
+        - name: "body"
+          description: "id da imagem para realizar a extração"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/imageId"
+      responses:
+        "201":
+          description: "Sucesso."
+          schema:
+            $ref: "#/definitions/extractionResponse"
+        "422":
+          description: "Tipo de arquivo não suportado."
+        "500":
+          description: "Erro Interno."
+  /address-validation:
+    post:
+      tags:
+        - "Validação"
+      summary: "Valide se os dados de endereço digitados pelo seu cliente conferem com o comprovante por imagem"
+      operationId: "validarEndereco"
+      parameters:
+        - name: "imageId"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/validationRequest"
+      responses:
+        "201":
+          description: "Sucesso."
+          schema:
+            $ref: "#/definitions/validationResponse"
+        "422":
+          description: "Imagem não encontrada."
+        "500":
+          description: "Erro Interno."
+definitions:
+  address:
+    type: "object"
+    properties:
+      cep:
+        type: "string"
+        example: "12345678"
+      state:
+        type: "string"
+        example: "SP"
+      city:
+        type: "string"
+        example: "Campinas"
+      neighborhood:
+        type: "string"
+        example: "Cidade Universitária"
+      street:
+        type: "string"
+        example: "Rua Alan Turing"
+      location:
+        type: "object"
+        $ref: '#/definitions/location'
+
+  location:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        example: "Point"
+      coordinates:
+        type: "object"
+        $ref: '#/definitions/coordinates'
+
+  coordinates:
+    type: "object"
+    properties:
+      longitude:
+        type: "string"
+        example: "-46.5746207"
+      latitude:
+        type: "string"
+        example: "-46.5746207"
+
+  imageId:
+    type: "object"
+    properties:
+      imageId:
+        type: "string"
+        example: "55d96149-6d00-45c7-afdb-0ddddc608a57"
+
+  extractionResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "55d96149-6d00-45c7-afdb-0ddddc608a57"
+      imageAddress:
+        type: "object"
+        $ref: '#/definitions/address'
+      correiosMatch:
+        type: "boolean"
+        example: true
+      confidence:
+        type: "number"
+        example: 0.5
+
+  validationRequest:
+    type: "object"
+    properties:
+      imageId:
+        type: "string"
+        example: "55d96149-6d00-45c7-afdb-0ddddc608a57"
+      address:
+        type: "object"
+        $ref: '#/definitions/address'
+
+  validationResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: "55d96149-6d00-45c7-afdb-0ddddc608a57"
+      imageAddress:
+        type: "object"
+        $ref: '#/definitions/address'
+      textAddress:
+        type: "object"
+        $ref: '#/definitions/address'
+      match:
+        type: "boolean"
+        example: true
+      confidence:
+        type: "number"
+        example: 0.5

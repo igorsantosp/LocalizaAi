@@ -33,11 +33,11 @@ public class CloudImersiveService {
         AddressImage addressImage = addressImageRepository.findById(imageId).orElseThrow(RuntimeException::new);
         File image = new File(addressImage.getFilename());
         ImageOcrApi apiInstance = new ImageOcrApi();
-        //return apiInstance.imageOcrPost(image,"Normal","POR","Auto");
-        ImageToTextResponse imageToTextResponse = new  ImageToTextResponse();
+        return apiInstance.imageOcrPost(image,"Normal","POR","Auto");
+        /*ImageToTextResponse imageToTextResponse = new  ImageToTextResponse();
         imageToTextResponse.setTextResult(imageToText());
         imageToTextResponse.setMeanConfidenceLevel(0.95F);
-        return imageToTextResponse;
+        return imageToTextResponse;*/
     }
 
     private String imageToText() {

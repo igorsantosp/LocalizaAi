@@ -1,6 +1,5 @@
 package com.localizaai.LocalizaAPI.api.addressimage;
 
-import com.localizaai.LocalizaAPI.core.addressimage.AddressImage;
 import com.localizaai.LocalizaAPI.core.addressimage.AddressImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +20,10 @@ public class AddressImageController {
 
     @PostMapping
     public ResponseEntity<AddressImageResponseBody> createAddressImage(
-        @RequestParam(value = "file") MultipartFile file,
-        @RequestParam("extension") String extension) throws IOException {
+        @RequestParam(value = "file") MultipartFile file) throws IOException {
 
         return ResponseEntity.ok(
             new AddressImageResponseBody(
-                addressImageService.saveAddressImage(file, extension)));
+                addressImageService.saveAddressImage(file)));
     }
 }

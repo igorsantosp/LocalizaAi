@@ -12,14 +12,14 @@ import java.util.UUID;
 public class AddressImageService {
     private final AddressImageRepository addressImageRepository;
 
-    public AddressImage saveAddressImage(MultipartFile file, String extension) throws IOException {
+    public AddressImage saveAddressImage(MultipartFile file) throws IOException {
         InputStream initialStream = file.getInputStream();
         byte[] buffer = new byte[initialStream.available()];
         initialStream.read(buffer);
 
         UUID uuid = UUID.randomUUID();
 
-        String filename = "src/main/resources/" + uuid + "." + extension;
+        String filename = "src/main/resources/" + uuid + ".png";
         File image = new File(filename);
 
         try (OutputStream outStream = new FileOutputStream(image)) {
